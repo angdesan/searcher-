@@ -1,6 +1,6 @@
-const URL = "https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.json";
+const URL = "https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.json";
 let loadProducts = async () =>{
-    let response = await fetch("https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.json");
+    let response = await fetch("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.json");
     let result = await response.json();
     for(let obj of result){
         let name = obj.name;
@@ -9,7 +9,7 @@ let loadProducts = async () =>{
         let type = obj.type;
         
         let message = `
-        <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4">
+        <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 objetos" id="${name}-${type}">
         <div class="card card-blog card-plain">
         <div class="card-header p-0 mt-n4 mx-3">
         <a class="d-block shadow-xl border-radius-xl">
@@ -33,7 +33,7 @@ let loadProducts = async () =>{
         document.getElementById("prueba").innerHTML += message;
         
     }
-    let responseXML = await fetch("https://raw.githubusercontent.com/Bootcamp-Espol/FSD02/main/S03D03/clase/recursos/products.xml");
+    let responseXML = await fetch("https://raw.githubusercontent.com/Bootcamp-Espol/Datos/main/products.xml");
     let resultXML = await responseXML.text();
     let xml = (new DOMParser()).parseFromString(resultXML,"application/xml");
     let arrayProducts = xml.getElementsByTagName('product');
@@ -43,7 +43,7 @@ let loadProducts = async () =>{
         let src = element.getElementsByTagName('src')[0].innerHTML;
         let type = element.getElementsByTagName('type')[0].innerHTML;
         let message = `
-        <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4">
+        <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 objetos" id="${name}-${type}">
         <div class="card card-blog card-plain">
         <div class="card-header p-0 mt-n4 mx-3">
         <a class="d-block shadow-xl border-radius-xl">
@@ -74,4 +74,28 @@ let loadProducts = async () =>{
 
 }
 
-loadProducts(URL)
+loadProducts()
+
+let element = document.getElementById("filter");
+
+element.addEventListener('click', (event) => {
+    //Código a ejecutar
+    let filtro = document.getElementById('text').value;
+    let arr_obj = document.getElementsByClassName('objetos');
+
+    for(let obj of arr_obj){
+        let splitObj = obj.id.split("-")
+        if(!(filtro==='')){
+            if(splitObj.indexOf(filtro)===-1){
+                document.getElementById(obj.id).style.display = 'none'
+            }else{
+                document.getElementById(obj.id).style.display = 'inline'
+            }
+
+        }else{
+            document.getElementById(obj.id).style.display = 'inline'
+        }
+    }
+    
+    
+});
